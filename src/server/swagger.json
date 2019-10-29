@@ -1,0 +1,403 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "MERN-CRUD",
+    "description": "An API to make CRUD operations using a MERN stack",
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "tags": [
+    {
+      "name": "user",
+      "description": "Operations on users"
+    }
+  ],
+  "paths": {
+    "/add/users": {
+      "post": {
+        "tags": ["user"],
+        "summary": "Creates multiple users",
+        "description": "",
+        "requestBody": {
+          "$ref": "#/components/requestBodies/usersCreate"
+        },
+        "responses": {
+          "201": {
+            "description": "Create success"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "409": {
+            "description": "Conflict"
+          }
+        }
+      }
+    },
+    "/add/user": {
+      "post": {
+        "tags": ["user"],
+        "summary": "Creates a single user",
+        "description": "",
+        "requestBody": {
+          "$ref": "#/components/requestBodies/userCreate"
+        },
+        "responses": {
+          "201": {
+            "description": "Create success"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "409": {
+            "description": "Conflict"
+          }
+        }
+      }
+    },
+    "/login": {
+      "post": {
+        "tags": ["user"],
+        "summary": "User login",
+        "description": "",
+        "requestBody": {
+          "$ref": "#/components/requestBodies/userLogin"
+        },
+        "responses": {
+          "200": {
+            "description": "Login success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/userLoginResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    },
+    "/logout": {
+      "get": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "tags": ["user"],
+        "summary": "User logout",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "Logout success"
+          }
+        }
+      }
+    },
+    "/users/list": {
+      "get": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "tags": ["user"],
+        "summary": "Get all users",
+        "description": "Returns all users",
+        "responses": {
+          "200": {
+            "description": "Get success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/usersGetAllResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          }
+        }
+      }
+    },
+    "/user/{id}": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "description": "id of the user",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "get": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "tags": ["user"],
+        "summary": "Get one user",
+        "description": "Returns the user with the given id",
+        "responses": {
+          "200": {
+            "description": "Get success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/userResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      },
+      "patch": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "tags": ["user"],
+        "summary": "Update one user",
+        "description": "Updates the user with the given id",
+        "requestBody": {
+          "$ref": "#/components/requestBodies/userPatchRequest"
+        },
+        "responses": {
+          "200": {
+            "description": "User update success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/userResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      }
+    },
+    "/delete/user/{id}": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "description": "id of the user",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "delete": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "tags": ["user"],
+        "summary": "Delete one user",
+        "description": "Deletes the user with the given id",
+        "responses": {
+          "200": {
+            "description": "User deletion success"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080/"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "requestBodies": {
+      "userCreate": {
+        "content": {
+          "application/x-www-form-urlencoded": {
+            "schema": {
+              "$ref": "#/components/schemas/userCreate"
+            }
+          }
+        }
+      },
+      "usersCreate": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/usersCreate"
+            }
+          }
+        }
+      },
+      "userLogin": {
+        "content": {
+          "application/x-www-form-urlencoded": {
+            "schema": {
+              "$ref": "#/components/schemas/userLogin"
+            }
+          }
+        }
+      },
+      "userPatchRequest": {
+        "content": {
+          "application/x-www-form-urlencoded": {
+            "schema": {
+              "$ref": "#/components/schemas/userPatchRequest"
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "userCreate": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "age": {
+            "type": "integer"
+          },
+          "balance": {
+            "type": "integer"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "uniqueItems": true
+          },
+          "password": {
+            "type": "string"
+          }
+        },
+        "required": ["name", "age", "balance", "email", "password"]
+      },
+      "usersCreate": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/userCreate"
+        }
+      },
+      "userLogin": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "uniqueItems": true
+          },
+          "password": {
+            "type": "string"
+          }
+        },
+        "required": ["email", "password"]
+      },
+      "userLoginResponse": {
+        "type": "object",
+        "properties": {
+          "user": {
+            "type": "object",
+            "$ref": "#/components/schemas/userResponse"
+          },
+          "token": {
+            "type": "string"
+          }
+        }
+      },
+      "userResponse": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "age": {
+            "type": "integer"
+          },
+          "balance": {
+            "type": "integer"
+          },
+          "email": {
+            "type": "integer"
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "updatedAt": {
+            "type": "string"
+          },
+          "__v": {
+            "type": "integer"
+          }
+        }
+      },
+      "usersGetAllResponse": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/userResponse"
+        }
+      },
+      "userPatchRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "age": {
+            "type": "integer"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "uniqueItems": true
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

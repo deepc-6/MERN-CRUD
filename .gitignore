@@ -1,0 +1,18 @@
+# dependencies
+src/client/node_modules
+src/server/node_modules
+
+# misc
+.vscode
+.DS_Store
+src/server/.env
+src/client/yarn.lock
+src/client/package-lock.json
+src/client/npm-debug.log*
+src/client/yarn-debug.log*
+src/client/yarn-error.log*
+src/server/yarn.lock
+src/server/package-lock.json
+src/server/npm-debug.log*
+src/server/yarn-debug.log*
+src/server/yarn-error.log*
