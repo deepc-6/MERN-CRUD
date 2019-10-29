@@ -7,6 +7,8 @@ export const userActions = {
   login,
   logout,
   getAll,
+  createOneUser,
+  deleteUser,
 };
 
 function login(email, password) {
@@ -64,5 +66,61 @@ function getAll() {
   }
   function failure(error) {
     return { type: userConstants.GETALL_FAILURE, error };
+  }
+}
+
+function createOneUser(user) {
+  return (dispatch) => {
+    dispatch(request(user));
+    userService.createOneUser(user).then(
+      () => {
+        dispatch(success());
+        dispatch(userActions.getAll());
+      },
+      (error) => {
+        if (error && error.message) {
+          error = error.message;
+        }
+        dispatch(failure(error));
+        dispatch(alertActions.error(error));
+      },
+    );
+  };
+  function request(user) {
+    return { type: userConstants.CREATEONE_REQUEST, user };
+  }
+  function success() {
+    return { type: userConstants.CREATEONE_SUCCESS };
+  }
+  function failure(error) {
+    return { type: userConstants.CREATEONE_FAILURE, error };
+  }
+}
+
+function deleteUser(id) {
+  return (dispatch) => {
+    dispatch(request(id));
+    userService.deleteUser(id).then(
+      () => {
+        dispatch(success());
+        dispatch(userActions.getAll());
+      },
+      (error) => {
+        if (error && error.message) {
+          error = error.message;
+        }
+        dispatch(failure(error));
+        dispatch(alertActions.error(error));
+      },
+    );
+  };
+  function request(id) {
+    return { type: userConstants.DELETE_REQUEST, id };
+  }
+  function success() {
+    return { type: userConstants.DELETE_SUCCESS };
+  }
+  function failure(error) {
+    return { type: userConstants.DELETE_FAILURE, error };
   }
 }

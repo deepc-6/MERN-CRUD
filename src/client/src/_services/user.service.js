@@ -5,6 +5,8 @@ export const userService = {
   login,
   logout,
   getAll,
+  createOneUser,
+  deleteUser,
 };
 
 function login(email, password) {
@@ -38,6 +40,29 @@ function getAll() {
   };
 
   return fetch(`${config.apiUrl}/users/list`, requestOptions).then(
+    handleResponse,
+  );
+}
+
+function createOneUser(user) {
+  const requestOptions = {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(user),
+  };
+
+  return fetch(`${config.apiUrl}/add/user`, requestOptions).then(
+    handleResponse,
+  );
+}
+
+function deleteUser(id) {
+  const requestOptions = {
+    method: 'DELETE',
+    headers: authHeader(),
+  };
+
+  return fetch(`${config.apiUrl}/delete/user/${id}`, requestOptions).then(
     handleResponse,
   );
 }

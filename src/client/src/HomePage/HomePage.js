@@ -3,38 +3,41 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import { userActions } from '../_actions';
+import { User } from '../_components/users/User';
 
 class HomePage extends React.Component {
   componentDidMount() {
     this.props.dispatch(userActions.getAll());
   }
 
+  addUser = (user) => {
+    this.props.dispatch(userActions.createOneUser(user));
+  };
+
+  deleteUser = (id) => {
+    this.props.dispatch(userActions.deleteUser(id));
+  };
+
   render() {
     const { user, users } = this.props;
     return (
-      <div className='col-md-6 col-md-offset-3'>
+      <div className='container'>
+        <Link to='/login'>Logout</Link>
         {user && users && (
           <div>
-            <h1>Hi {user.name}!</h1>
-            <p>You are now logged in</p>
-            <h3>Users from secure api end point:</h3>
             {users.loading && <em>Loading users...</em>}
             {users.error && (
               <span className='text-danger'>ERROR: {users.error.message}</span>
             )}
             {users.users && (
-              <ul>
-                {users.users.map((user, index) => (
-                  <li key={user._id}>
-                    <p>Name: {user.name}</p>
-                    <p>E-mail: {user.email}</p>
-                  </li>
-                ))}
-              </ul>
+              <User
+                addUser={this.addUser}
+                deleteUser={this.deleteUser}
+                dispatch={this.props.dispatch}
+                user={user}
+                users={users.users}
+              />
             )}
-            <p>
-              <Link to='/login'>Logout</Link>
-            </p>
           </div>
         )}
       </div>
