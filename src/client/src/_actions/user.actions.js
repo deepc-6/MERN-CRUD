@@ -8,13 +8,13 @@ export const userActions = {
   logout,
   getAll,
   createOneUser,
+  updateUser,
   deleteUser,
 };
 
 function login(email, password) {
   return (dispatch) => {
     dispatch(request({ email }));
-
     userService.login(email, password).then(
       (user) => {
         dispatch(success(user));
@@ -49,7 +49,6 @@ function logout() {
 function getAll() {
   return (dispatch) => {
     dispatch(request());
-
     userService
       .getAll()
       .then(
@@ -75,7 +74,7 @@ function createOneUser(user) {
     userService.createOneUser(user).then(
       () => {
         dispatch(success());
-        dispatch(userActions.getAll());
+        dispatch(getAll());
       },
       (error) => {
         if (error && error.message) {
@@ -97,13 +96,41 @@ function createOneUser(user) {
   }
 }
 
+function updateUser(updatedUser) {
+  return (dispatch) => {
+    dispatch(request(updatedUser));
+    userService.updateUser(updatedUser).then(
+      (user) => {
+        dispatch(success(user));
+        dispatch(getAll());
+      },
+      (error) => {
+        if (error && error.message) {
+          error = error.message;
+        }
+        dispatch(failure(error));
+        dispatch(alertActions.error(error));
+      },
+    );
+  };
+  function request(user) {
+    return { type: userConstants.UPDATE_REQUEST, user };
+  }
+  function success(user) {
+    return { type: userConstants.UPDATE_SUCCESS, user };
+  }
+  function failure(error) {
+    return { type: userConstants.UPDATE_FAILURE, error };
+  }
+}
+
 function deleteUser(id) {
   return (dispatch) => {
     dispatch(request(id));
     userService.deleteUser(id).then(
       () => {
         dispatch(success());
-        dispatch(userActions.getAll());
+        dispatch(getAll());
       },
       (error) => {
         if (error && error.message) {

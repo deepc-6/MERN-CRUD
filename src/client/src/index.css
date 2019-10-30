@@ -16,4 +16,26 @@ button,
 .button {
   margin-bottom: 0 !important;
   margin-right: 0.5rem;
+  outline: none;
+}
+
+.buttonContainer {
+  text-align: right;
+  padding: 1rem;
+}
+
+.buttonContainer button a {
+  color: white !important;
+  text-decoration: none;
+}
+
+.center {
+  text-align: center;
+}
+
+.greyBackground {
+  background: grey;
+  padding: 2rem;
+  border-radius: 10px;
+  color: white;
 }

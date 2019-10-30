@@ -1,12 +1,12 @@
 import React from 'react';
 
-export const UserView = (props) => (
+export const UserTable = (props) => (
   <table>
     <thead>
       <tr>
-        <th>Name</th>
-        <th>E-mail</th>
-        <th>Actions</th>
+        <th className='center'>Name</th>
+        <th className='center'>E-mail</th>
+        <th className='center'>Actions</th>
       </tr>
     </thead>
     <tbody>
@@ -16,8 +16,14 @@ export const UserView = (props) => (
             <td>{user.name}</td>
             <td>{user.email}</td>
             <td>
-              <button className='button muted-button'>View</button>
-              <button className='button muted-button'>Edit</button>
+              <button
+                onClick={() => {
+                  props.editRow(user);
+                }}
+                className='button muted-button'
+              >
+                Edit
+              </button>
               <button
                 onClick={() => props.deleteUser(user._id)}
                 className='button muted-button'

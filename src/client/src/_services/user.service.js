@@ -6,6 +6,7 @@ export const userService = {
   logout,
   getAll,
   createOneUser,
+  updateUser,
   deleteUser,
 };
 
@@ -15,7 +16,6 @@ function login(email, password) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ email, password }),
   };
-
   return fetch(`${config.apiUrl}/login`, requestOptions)
     .then(handleResponse)
     .then((_user) => {
@@ -38,7 +38,6 @@ function getAll() {
     method: 'GET',
     headers: authHeader(),
   };
-
   return fetch(`${config.apiUrl}/users/list`, requestOptions).then(
     handleResponse,
   );
@@ -50,8 +49,23 @@ function createOneUser(user) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(user),
   };
-
   return fetch(`${config.apiUrl}/add/user`, requestOptions).then(
+    handleResponse,
+  );
+}
+
+function updateUser(user) {
+  const id = user._id;
+  delete user._id;
+  if (!user.password) {
+    delete user.password;
+  }
+  const requestOptions = {
+    method: 'PATCH',
+    headers: authHeader(),
+    body: JSON.stringify(user),
+  };
+  return fetch(`${config.apiUrl}/user/${id}`, requestOptions).then(
     handleResponse,
   );
 }
@@ -61,7 +75,6 @@ function deleteUser(id) {
     method: 'DELETE',
     headers: authHeader(),
   };
-
   return fetch(`${config.apiUrl}/delete/user/${id}`, requestOptions).then(
     handleResponse,
   );
@@ -76,7 +89,6 @@ function handleResponse(response) {
         logout();
         window.location.reload(true);
       }
-
       const error = (data && data.message) || response.statusText;
       return Promise.reject(error);
     }
