@@ -1,7 +1,7 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
+import { history } from '../_helpers';
 import { userActions } from '../_actions';
 import { User } from '../_components/users/User';
 
@@ -22,21 +22,22 @@ class HomePage extends React.Component {
     this.props.dispatch(userActions.deleteUser(id));
   };
 
+  logOut = () => {
+    localStorage.removeItem('user');
+    history.push('/');
+  };
+
   render() {
     const { user, users } = this.props;
     return (
       <div className='container'>
         <div className='buttonContainer'>
-          <button>
-            <Link to='/login'>Logout</Link>
+          <button onClick={() => this.logOut()} className='button'>
+            Logout
           </button>
         </div>
         {user && users && (
           <div>
-            {users.loading && <em>Loading users...</em>}
-            {users.error && (
-              <span className='text-danger'>ERROR: {users.error.message}</span>
-            )}
             {users.users && (
               <User
                 fetchedUser={users.fetchedUser}

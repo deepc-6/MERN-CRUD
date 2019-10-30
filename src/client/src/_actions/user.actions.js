@@ -82,6 +82,7 @@ function createOneUser(user) {
         }
         dispatch(failure(error));
         dispatch(alertActions.error(error));
+        dispatch(getAll());
       },
     );
   };
@@ -110,6 +111,7 @@ function updateUser(updatedUser) {
         }
         dispatch(failure(error));
         dispatch(alertActions.error(error));
+        dispatch(getAll());
       },
     );
   };
@@ -138,6 +140,7 @@ function deleteUser(id) {
         }
         dispatch(failure(error));
         dispatch(alertActions.error(error));
+        dispatch(getAll());
       },
     );
   };
