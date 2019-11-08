@@ -6,7 +6,6 @@ node_modules
 # misc
 .vscode
 .DS_Store
-src/server/.env
 yarn.lock
 package-lock.json
 npm-debug.log*
